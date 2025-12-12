@@ -1,0 +1,49 @@
+---
+description: OpenTofu and Terraform Best Practices
+globs: ["**/*.tf", "**/*.hcl", "**/generate_*.py"]
+---
+# OpenTofu/Terraform Development Rules
+
+When working with OpenTofu/Terraform code in this project, you must adhere to the following rules derived from [Terraform Best Practices](https://www.terraform-best-practices.com/).
+
+## 1. Branding & Terminology
+- **OpenTofu**: Use "OpenTofu" for tool execution, labels, and metadata (e.g., `managed_by = "opentofu"`).
+- **Terraform**: Use "Terraform" only for HCL blocks (`terraform {}`) or provider compatibility.
+
+## 2. File Structure
+- **Filenames**: Always use `snake_case`.
+- **Standard Files**: Ensure modules have `main.tf`, `variables.tf`, `outputs.tf`, and `versions.tf`.
+- **Headers**: All `.tf` files must start with:
+  ```hcl
+  #-------------------------------------------------------------------------------
+  # {filename}
+  #-------------------------------------------------------------------------------
+  ```
+
+## 3. Naming Conventions
+- **General**: Use `snake_case` for everything (resources, vars, outputs). Use underscores, not dashes.
+- **Resources**:
+  - NEW: `resource "provider_type" "name" {}`
+  - Rule: Do not repeat resource type in the name.
+  - Good: `resource "google_compute_instance" "main" {}` (or `this` if single)
+  - Bad: `resource "google_compute_instance" "main_instance" {}`
+- **Variables**:
+  - Always include `description`, `type`, and `default` (if optional).
+  - Use `description`, `type`, `default`, `validation` order.
+- **Outputs**:
+  - Pattern: `{name}_{type}_{attribute}` (e.g., `vpc_id`, `db_instance_endpoint`).
+  - Use plural names for lists.
+
+## 4. Coding Style
+- **Comments**: Use `#` for comments. Do NOT use `//`.
+- **Formatting**: Code must be compliant with `tofu fmt`.
+- **HEREDOC**: Use `<<-EOT` for long strings/descriptions (>80 chars).
+
+## 5. Security & Safety
+- **Secrets**: NEVER hardcode secrets. Use data sources or Secret Manager.
+- **State**: Assume remote state is used.
+- **Safety**: Use `lifecycle { prevent_destroy = true }` for stateful/critical resources.
+
+## 6. Code Generation
+- **ReadOnly**: Treat `modules/` as read-only.
+- **Modifications**: Edit the Python generator scripts (`generate_*.py`) to change module output, do not edit `.tf` files directly in `modules/`.
