@@ -53,3 +53,8 @@ variable "require_code_owner_reviews" {
   description = "Require code owner reviews."
   default     = false
 }
+
+variable "enable_branch_protection" {
+  description = "Enable branch protection. Set to false for private repositories on GitHub Free."
+  default     = false
+}

@@ -32,6 +32,8 @@ module "repository" {
 module "branch_protection" {
   source = "../../modules/github_branch_protection"
 
+  count = var.enable_branch_protection ? 1 : 0
+
   repository_id = module.repository.name
   pattern       = "main"
 
