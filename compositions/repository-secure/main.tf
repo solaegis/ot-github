@@ -44,8 +44,8 @@ module "branch_protection" {
 
   required_pull_request_reviews = {
     dismiss_stale_reviews           = true
-    restrict_dismissals             = true
-    require_code_owner_reviews      = true
+    restrict_dismissals             = var.restrict_dismissals
+    require_code_owner_reviews      = var.require_code_owner_reviews
     required_approving_review_count = 1
   }
 }

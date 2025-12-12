@@ -42,3 +42,14 @@ variable "license_template" { default = null }
 variable "archived" { default = false }
 variable "topics" { default = [] }
 variable "vulnerability_alerts" { default = true }
+
+# Branch Protection Variables
+variable "restrict_dismissals" {
+  description = "Restrict pull request review dismissals."
+  default     = false
+}
+
+variable "require_code_owner_reviews" {
+  description = "Require code owner reviews."
+  default     = false
+}
