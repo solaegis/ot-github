@@ -21,8 +21,12 @@ resource "github_branch_protection" "this" {
     required_approving_review_count = var.required_pull_request_reviews.required_approving_review_count
   }
 
-  restrict_pushes {
-    blocks_creations = false
-    push_allowances  = var.push_restrictions
+  # Only include restrict_pushes for organization repos when push_restrictions is set
+  dynamic "restrict_pushes" {
+    for_each = length(var.push_restrictions) > 0 ? [1] : []
+    content {
+      blocks_creations = false
+      push_allowances  = var.push_restrictions
+    }
   }
 }
